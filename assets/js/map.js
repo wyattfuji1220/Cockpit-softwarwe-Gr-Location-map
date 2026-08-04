@@ -10,14 +10,16 @@ const MapApp = (function () {
              scope: () => SITES.filter(s => s.reg === '日本') }
   };
 
-  /* 「自動」モードでロゴ表示に切り替わるズーム閾値 */
-  const LOGO_ZOOM = 4;
+  /* 「自動」モードでロゴ表示に切り替わるズーム閾値
+     世界地図の初期ズームは2、日本地図は5。既定では記号表示から始まり、
+     地域を絞り込んだ段階で公式ロゴに切り替わる。 */
+  const LOGO_ZOOM = 6;
 
   let map, layer, view, scope;
   const markers = new Map();   // site.id -> L.Marker
   let selectedId = null;
   let lastList = [];
-  let markerMode = 'logo';     // 'logo'（既定） | 'auto' | 'mono'
+  let markerMode = 'auto';     // 'auto'（既定） | 'logo' | 'mono'
 
   /* 現在の実効表示モード */
   function effectiveMode() {
@@ -222,5 +224,5 @@ const MapApp = (function () {
   }
 
   return { init, render, select, focus, fitAll, reset, setMarkerMode,
-           getScope: () => scope, LOGO_ZOOM };
+           getScope: () => scope, getMap: () => map, LOGO_ZOOM };
 })();
