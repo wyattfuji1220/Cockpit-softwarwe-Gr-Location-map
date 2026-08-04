@@ -26,7 +26,12 @@
       "Bash(node \"C:/Users/media/AppData/Local/Temp/claude/C--Users-media-OneDrive--------Claude-Tier-----/fd16b856-2397-4a6f-98dd-56b9334c4872/scratchpad/enrich.js\" assets/js/data.js)",
       "Bash(node -e \"require\\('fs'\\);\")",
       "Bash(node --check assets/js/data.js)",
-      "Bash(git commit -q -m '[データ] 公開情報にもとづき主要18拠点の製造品目を詳細化 *)"
+      "Bash(git commit -q -m '[データ] 公開情報にもとづき主要18拠点の製造品目を詳細化 *)",
+      "Read(//c/Users/media/AppData/Local/Temp/**)",
+      "Bash(echo \"--- broader search \\(last 6h, any size\\) ---\")",
+      "WebFetch(domain:www.city.higashihiroshima.lg.jp)",
+      "WebFetch(domain:ja.wikipedia.org)",
+      "Bash(git commit -q -m '[データ] 担当者情報にもとづき要確認4拠点を確定 *)"
     ]
   }
 }
