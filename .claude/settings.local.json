@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git --version)",
+      "Bash(gh --version)",
+      "Bash(git config *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git ls-remote *)",
+      "WebSearch",
+      "WebFetch(domain:automotive.panasonic.com)",
+      "WebFetch(domain:www.denso-ten.com)",
+      "WebFetch(domain:www.nippon-seiki.co.jp)",
+      "WebFetch(domain:www.harada.com)",
+      "WebFetch(domain:www.yokowo.co.jp)",
+      "WebFetch(domain:jpn.pioneer)",
+      "WebFetch(domain:www.visteon.com)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m '[初期] リポジトリ初期化：README・.gitignore *)",
+      "Bash(git push *)"
+    ]
+  }
+}
