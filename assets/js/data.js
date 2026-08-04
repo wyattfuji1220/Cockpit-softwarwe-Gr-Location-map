@@ -41,7 +41,8 @@ const COMPANIES = [
   {
     id: 'vist', name: 'ビステオン', short: 'ビステオン',
     nameEn: 'Visteon Corporation', mono: 'V', color: '#5F97A8',
-    logo: 'assets/logos/official/vist.svg', ar: 4.402,
+    /* 濃色背景つきの公式ロゴ。bg を指定するとピル型マーカーの地色を合わせる */
+    logo: 'assets/logos/official/vist.png', ar: 4.344, bg: '#004762',
     hqCountry: '米国', url: 'https://www.visteon.com/japan/default.aspx',
     category: 'デジタルコックピット / ディスプレイ',
     products: 'デジタルインストルメントクラスタ、SmartCore™ コックピットドメインコントローラ、車載ディスプレイ、AllGo® インフォテインメント',
@@ -58,8 +59,8 @@ const COMPANIES = [
   },
   {
     id: 'desay', name: 'Desay SV（德赛西威）', short: 'Desay SV',
-    nameEn: 'Huizhou Desay SV Automotive Co., Ltd.', mono: 'DS', color: '#C4794E',
-    logo: null, ar: 0,
+    nameEn: 'Huizhou Desay SV Automotive Co., Ltd.', mono: 'DS', color: '#51647B',
+    logo: 'assets/logos/official/desay.png', ar: 4.25, bg: '#51647B',
     hqCountry: '中国', url: 'https://jp.desaysv.com/',
     category: 'コックピットDCU / IVI',
     products: 'スマートコックピットドメインコントローラ、車載インフォテインメント、ディスプレイ、インテリジェント運転支援（IPU）、車載ネットワーク',
@@ -78,7 +79,8 @@ const COMPANIES = [
     id: 'lgd', name: 'LGディスプレイ', short: 'LGディスプレイ',
     nameEn: 'LG Display Co., Ltd.', mono: 'LD', color: '#6E5B8E',
     /* 公式ヘッダーロゴは縦2段スプライト（上=白抜き／下=濃色）。下段を切り出して使用 */
-    logo: 'assets/logos/official/lgd_sprite.png', ar: 5.229, crop: { rows: 2, row: 1 },
+    logo: 'assets/logos/official/lgd_sprite.png', ar: 5.229,
+    trim: { x: 0, y: 0.5, w: 1, h: 0.5 },
     hqCountry: '韓国', url: 'https://www.lgdisplay.com/kor',
     category: '車載ディスプレイパネル',
     products: '車載用LCDパネル、車載用OLED（P-OLED/Tandem OLED）、LTPS LCD、大型ピラーtoピラーディスプレイ',
@@ -95,8 +97,10 @@ const COMPANIES = [
   },
   {
     id: 'molex', name: 'Molex（モレックス）', short: 'Molex',
-    nameEn: 'Molex, LLC', mono: 'MX', color: '#B08A3E',
-    logo: null, ar: 0,
+    nameEn: 'Molex, LLC', mono: 'MX', color: '#C8102E',
+    /* 正方形に近いロゴ。余白を trim で切り落とし、円形ピンに収める */
+    logo: 'assets/logos/official/molex.png', ar: 1.264,
+    trim: { x: 0, y: 0.1223, w: 0.9563, h: 0.8705 },
     hqCountry: '米国', url: 'https://www.molex.com/ja-jp/home',
     category: 'コネクタ / インターコネクト',
     products: '車載コネクタ、ワイヤーハーネス部品、車載イーサネット/高速データコネクタ、アンテナ、同軸ケーブルアセンブリ',
@@ -105,7 +109,8 @@ const COMPANIES = [
   {
     id: 'harman', name: 'ハーマンインターナショナル', short: 'ハーマン',
     nameEn: 'HARMAN International Industries', mono: 'H', color: '#7F8C4C',
-    logo: 'assets/logos/official/harman.svg', ar: 1.707,
+    logo: 'assets/logos/official/harman.png', ar: 1.867,
+    trim: { x: 0.1716, y: 0.0571, w: 0.6627, h: 0.8571 },
     hqCountry: '米国', url: 'https://www.harman.com/',
     category: '車載オーディオ / インフォテインメント',
     products: 'プレミアムカーオーディオ（JBL/harman kardon/Mark Levinson/Bowers & Wilkins）、車載インフォテインメント、テレマティクス、Ready Upgradeプラットフォーム',

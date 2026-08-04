@@ -81,18 +81,32 @@ const MapApp = (function () {
       : '';
     const cls = site.conf === 'low' ? ' mk--unconfirmed' : '';
 
+    const vars = '--co:' + co.color + ';--tc:' + TYPE_COLOR[pt];
+
     let html, w, h;
-    if (mode === 'logo' && co.logo) {
-      w = wordmarkWidth(co, 22); h = 26;
+    if (mode === 'logo' && co.logo && !isSquarish(co)) {
+      /* 横長ワードマーク → ピル型。背景色つきロゴは地色を合わせて余白なしで敷き詰める */
+      const m = pillMetrics(co);
+      w = m.w; h = PILL.H;
+      const pillStyle = 'width:' + w + 'px' + (m.full ? ';background:' + co.bg + ';padding:0' : '');
       html =
-        '<div class="mk mk--pill' + cls + '" style="--co:' + co.color + ';--tc:' + TYPE_COLOR[pt] + '">' +
-          '<div class="mk__pin mk__pin--pill" style="width:' + w + 'px">' + wordmarkHtml(co, 15) + '</div>' +
+        '<div class="mk mk--pill' + cls + '" style="' + vars + '">' +
+          '<div class="mk__pin mk__pin--pill" style="' + pillStyle + '">' +
+            (m.full ? wordmarkFillHtml(co) : wordmarkHtml(co, m.logoH)) + '</div>' +
+          '<div class="mk__badge">' + TYPE_ICON[pt] + '</div>' + flag +
+        '</div>';
+    } else if (mode === 'logo' && co.logo) {
+      /* 正方形に近いロゴ → 円形ピンの中にロゴを収める */
+      w = 30; h = 30;
+      html =
+        '<div class="mk' + cls + '" style="' + vars + '">' +
+          '<div class="mk__pin mk__pin--sq">' + wordmarkHtml(co, Math.round(24 / co.ar)) + '</div>' +
           '<div class="mk__badge">' + TYPE_ICON[pt] + '</div>' + flag +
         '</div>';
     } else {
       w = 30; h = 30;
       html =
-        '<div class="mk' + cls + '" style="--co:' + co.color + ';--tc:' + TYPE_COLOR[pt] + '">' +
+        '<div class="mk' + cls + '" style="' + vars + '">' +
           '<div class="mk__pin">' + monogramHtml(co, 24) + '</div>' +
           '<div class="mk__badge">' + TYPE_ICON[pt] + '</div>' + flag +
         '</div>';

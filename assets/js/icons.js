@@ -55,18 +55,26 @@ function monogramHtml(co, size) {
          'font-weight="700" letter-spacing="-0.4" fill="' + co.color + '">' + co.mono + '</text></svg>';
 }
 
-/* 公式ワードマーク（未取得の企業はモノグラムを返す） */
+/*
+  公式ワードマーク（未取得の企業はモノグラムを返す）
+
+  co.trim = { x, y, w, h }  … 元画像に対する使用領域の比率。
+    余白の切り落としや、縦分割スプライトからの1行抜き出しに使う。
+*/
 function wordmarkHtml(co, height) {
   const h = height || 18;
   if (!co.logo) return monogramHtml(co, h);
 
-  /* 縦分割スプライトのロゴは指定行だけを切り出して表示する */
-  if (co.crop) {
-    const w = Math.round(h * co.ar);
+  if (co.trim) {
+    const t = co.trim;
+    const w  = Math.round(h * co.ar);
+    const fw = w / t.w;              // 元画像を拡大した際の全体幅
+    const fh = h / t.h;              // 同・全体高さ
     return '<span class="wm wm--clip" style="height:' + h + 'px;width:' + w + 'px">' +
              '<img src="' + co.logo + '" alt="' + co.short + '" ' +
-             'style="width:' + w + 'px;height:' + (h * co.crop.rows) + 'px;' +
-             'transform:translateY(-' + (h * co.crop.row) + 'px)">' +
+             'style="width:' + fw.toFixed(2) + 'px;height:' + fh.toFixed(2) + 'px;' +
+             'margin-left:' + (-fw * t.x).toFixed(2) + 'px;' +
+             'margin-top:'  + (-fh * t.y).toFixed(2) + 'px">' +
            '</span>';
   }
   return '<img class="wm" src="' + co.logo + '" alt="' + co.short + '" ' +
@@ -80,12 +88,42 @@ function monoSize(mono) {
   return mono.length >= 3 ? 13 : mono.length === 2 ? 17 : 23;
 }
 
-/* ピン内でワードマークを表示する際の幅（高さ22px基準、上限78px） */
-function wordmarkWidth(co, h) {
-  const height = h || 22;
-  if (!co.logo || !co.ar) return height;
-  return Math.min(78, Math.max(26, Math.round(height * co.ar)));
+/*
+  ピル型マーカーの寸法計算。
+  横幅が上限を超える極端に横長のロゴは、はみ出さないようロゴ高さ側を詰める。
+    full   : true = 背景色つきロゴを余白なしで幅いっぱいに敷く
+    logoH  : ロゴの描画高さ（full の場合は未使用）
+*/
+const PILL = { H: 26, MAXW: 96, MINW: 30, PAD: 7, LOGO_H: 15 };
+
+function pillMetrics(co) {
+  if (!co.logo || !co.ar) return { w: PILL.MINW, logoH: PILL.LOGO_H, full: false };
+
+  if (co.bg) {
+    return { w: Math.min(PILL.MAXW, Math.max(PILL.MINW, Math.round(PILL.H * co.ar))),
+             logoH: PILL.H, full: true };
+  }
+  let logoH = PILL.LOGO_H;
+  let w = Math.round(logoH * co.ar) + PILL.PAD * 2;
+  if (w > PILL.MAXW) {
+    w = PILL.MAXW;
+    logoH = Math.max(6, Math.round((PILL.MAXW - PILL.PAD * 2) / co.ar));
+  }
+  if (w < PILL.MINW) w = PILL.MINW;
+  return { w, logoH, full: false };
 }
+
+/* 背景色つきロゴをピル幅いっぱいに敷く場合の描画 */
+function wordmarkFillHtml(co) {
+  return '<img class="wm wm--fill" src="' + co.logo + '" alt="' + co.short + '">';
+}
+
+/*
+  正方形に近いロゴ（縦横比1.6未満）は横長ピルに入れると潰れるため、
+  円形ピンの中にロゴをそのまま収める。
+*/
+const SQUARISH_AR = 1.6;
+function isSquarish(co) { return !!co.logo && co.ar > 0 && co.ar < SQUARISH_AR; }
 
 /* 施設種別を優先度順に並べた代表種別（バッジ表示用） */
 function primaryType(types) {
