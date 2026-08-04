@@ -21,7 +21,12 @@
       "Bash(sed -e 's|<title>世界地図 ｜|<title>日本地図 ｜|' world.html)",
       "Bash(python -c ' *)",
       "Bash(npx --version)",
-      "Bash(cd \"C:/Users/media/OneDrive/デスクトップ/Claude/Tier１ マップ\" && echo \"--- LGD header ---\" && grep -oiE '<\\(img|a\\)[^>]{0,300}\\(logo|header\\)[^>]{0,300}>' /tmp/lg/lgd.html | head -8 *)"
+      "Bash(cd \"C:/Users/media/OneDrive/デスクトップ/Claude/Tier１ マップ\" && echo \"--- LGD header ---\" && grep -oiE '<\\(img|a\\)[^>]{0,300}\\(logo|header\\)[^>]{0,300}>' /tmp/lg/lgd.html | head -8 *)",
+      "Bash(cp assets/js/data.js /tmp/data.bak.js)",
+      "Bash(node \"C:/Users/media/AppData/Local/Temp/claude/C--Users-media-OneDrive--------Claude-Tier-----/fd16b856-2397-4a6f-98dd-56b9334c4872/scratchpad/enrich.js\" assets/js/data.js)",
+      "Bash(node -e \"require\\('fs'\\);\")",
+      "Bash(node --check assets/js/data.js)",
+      "Bash(git commit -q -m '[データ] 公開情報にもとづき主要18拠点の製造品目を詳細化 *)"
     ]
   }
 }
