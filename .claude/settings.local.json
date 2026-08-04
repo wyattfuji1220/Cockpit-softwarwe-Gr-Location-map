@@ -20,7 +20,8 @@
       "Bash(git push *)",
       "Bash(sed -e 's|<title>世界地図 ｜|<title>日本地図 ｜|' world.html)",
       "Bash(python -c ' *)",
-      "Bash(npx --version)"
+      "Bash(npx --version)",
+      "Bash(cd \"C:/Users/media/OneDrive/デスクトップ/Claude/Tier１ マップ\" && echo \"--- LGD header ---\" && grep -oiE '<\\(img|a\\)[^>]{0,300}\\(logo|header\\)[^>]{0,300}>' /tmp/lg/lgd.html | head -8 *)"
     ]
   }
 }

@@ -160,8 +160,8 @@
     const seg = types.map(t => ({ t, n: mine.filter(s => s.t.includes(t)).length }));
     const tot = seg.reduce((a, b) => a + b.n, 0) || 1;
     return `<a class="card" href="world.html" style="--co:${co.color}">
+      <div class="card__wm">${wordmarkHtml(co, 24)}</div>
       <div class="card__top">
-        <span class="card__logo">${logoHtml(co, 28)}</span>
         <span><span class="card__name">${co.name}</span><br>
         <span class="card__cat">${co.category}　｜　本社: ${co.hqCountry}</span></span>
       </div>

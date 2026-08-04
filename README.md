@@ -52,9 +52,36 @@ assets/
 
 ## ロゴについて
 
-`assets/logos/` にSVGのモノグラムマークを同梱しています。各社の公式ロゴ画像に差し替える場合は、
-同名ファイル（例: `pas.svg` → `pas.png`）を配置し `assets/js/data.js` の `logo` パスを更新してください。
-公式ロゴは各社の商標です。社外公開時は各社のブランドガイドラインをご確認ください。
+`assets/logos/official/` に各社公式サイトから取得したロゴを配置しています（個人利用の範囲での利用）。
+`assets/js/data.js` の `COMPANIES[].logo` / `ar`（アスペクト比）で参照します。
+
+| 企業 | ファイル | 取得元 |
+|------|----------|--------|
+| パナソニックAS | `pas.svg` | automotive.panasonic.com |
+| デンソーテン | `dten.png` | denso-ten.com |
+| ビステオン | `vist.svg` | Visteon IR CDN (q4cdn.com) |
+| 日本精機 | `nseiki.png` | nippon-seiki.co.jp |
+| LGエレクトロニクス | `lge.svg` | lg.com |
+| LGディスプレイ | `lgd_sprite.png` | lgdisplay.com（縦2段スプライト・下段が濃色版） |
+| パイオニア | `pioneer.svg` | assets.jpn.pioneer |
+| ハーマン | `harman.svg` | harman.com |
+| 原田工業 | `harada.png` | harada.com |
+| ヨコオ | `yokowo.svg` | yokowo.co.jp |
+| **Desay SV** | — | サイト側のbot対策で未取得（モノグラム表示） |
+| **Molex** | — | サイト側のbot対策で未取得（モノグラム表示） |
+
+- 縦分割スプライト形式のロゴは `crop: { rows, row }` を指定すると該当行だけを切り出して表示します。
+- ロゴ未取得の企業は自動的にモノグラムマーク（`assets/logos/<id>.svg`）にフォールバックします。
+- **公式ロゴは各社の商標です。** 本サイトは個人・社内での担当業務把握を目的とした資料であり、
+  社外公開・配布時は各社のブランドガイドライン確認が必要です。
+
+### マーカー表示モード
+
+| モード | 挙動 |
+|--------|------|
+| 自動（既定） | ズーム6未満は円形モノグラム、ズーム6以上は公式ロゴのピル型マーカー |
+| 記号 | 常に円形モノグラム（拠点密度の把握に最適） |
+| ロゴ | 常に公式ロゴのピル型マーカー |
 
 ## Git運用ルール
 

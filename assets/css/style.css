@@ -200,6 +200,17 @@ a { color: inherit; text-decoration: none; }
 }
 .chk.is-off .chk__label, .chk.is-off .chk__count { color: var(--ink-4); }
 
+/* セグメンテッドコントロール */
+.seg { display: flex; border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; }
+.seg__b {
+  flex: 1; padding: 6px 0; font-family: inherit; font-size: 11.5px;
+  color: var(--ink-2); background: var(--surface); cursor: pointer;
+  border: 0; border-left: 1px solid var(--line-2); transition: all .15s;
+}
+.seg__b:first-child { border-left: 0; }
+.seg__b:hover { background: var(--surface-2); }
+.seg__b.is-on { background: var(--accent); color: #fff; }
+
 .search {
   width: 100%; padding: 8px 11px;
   font-family: inherit; font-size: 12.5px; color: var(--ink);
@@ -249,6 +260,19 @@ a { color: inherit; text-decoration: none; }
 .mk__pin img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
 .mk__pin svg { width: 100%; height: 100%; }
 
+/* ピル型（拡大時：公式ワードマーク表示） */
+.mk__pin--pill {
+  height: 26px; border-radius: 13px;
+  padding: 0 7px; background: #fff;
+}
+.mk__pin--pill img.wm { width: auto; height: 15px; padding: 0; }
+.mk__pin--pill .wm--clip img { padding: 0; }
+
+/* 縦分割スプライトロゴのクリップ表示 */
+.wm--clip { display: inline-block; overflow: hidden; flex: 0 0 auto; }
+.wm--clip img { display: block; object-fit: fill; max-width: none; }
+.mk--pill .mk__badge { right: -5px; bottom: -5px; }
+
 .mk__badge {
   position: absolute; right: -4px; bottom: -4px;
   width: 15px; height: 15px; border-radius: 50%;
@@ -288,6 +312,21 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-3); margin-bottom: 7px;
 }
 .tt__co i { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 8px; }
+
+/* ブランドヘッダー（公式ワードマーク＋社名） */
+.tt__brand {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 9px; margin-bottom: 9px;
+  border-bottom: 1px solid var(--line);
+}
+.tt__wm { display: flex; align-items: center; min-width: 0; }
+.tt__wm img { height: 20px; width: auto; max-width: 150px; object-fit: contain; }
+.tt__cot {
+  margin-left: auto; flex: 0 0 auto;
+  font-size: 9.5px; letter-spacing: .08em; color: var(--ink-3);
+  padding: 1px 0 1px 8px; border-left: 2px solid var(--accent);
+  line-height: 1.4;
+}
 .tt__name { font-family: var(--font-serif); font-size: 15px; font-weight: 600; line-height: 1.45; margin-bottom: 2px; }
 .tt__ln { font-size: 11.5px; color: var(--ink-2); margin-bottom: 9px; line-height: 1.5; }
 .tt__tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
@@ -404,6 +443,12 @@ a { color: inherit; text-decoration: none; }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .card { background: var(--surface); padding: 20px 22px 22px; transition: background .16s; }
 .card:hover { background: var(--surface-2); }
+.card__wm {
+  display: flex; align-items: center; height: 30px;
+  padding-bottom: 14px; margin-bottom: 13px; border-bottom: 2px solid var(--co);
+}
+.card__wm img { height: 24px; width: auto; max-width: 190px; object-fit: contain; }
+.card__wm svg { height: 26px; width: 26px; }
 .card__top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .card__logo {
   width: 34px; height: 34px; flex: 0 0 34px; border-radius: 50%;

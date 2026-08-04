@@ -37,23 +37,54 @@ const TYPE_COLOR = {
 
 /*
   企業ロゴの描画。
-  assets/logos/<id>.svg を読み込み、失敗した場合はモノグラムにフォールバックする。
-  公式ロゴ画像に差し替える場合は同ディレクトリのファイルを置き換えるだけでよい。
+
+  - monogramHtml : 正方形のモノグラムマーク（円形ピン・狭い場所用）
+  - wordmarkHtml : 公式ロゴのワードマーク（横に余裕がある場所用）
+
+  公式ロゴは assets/logos/official/ に配置し、COMPANIES の logo / ar で参照する。
+  logo が null の企業（サイト側の制約で未取得）はモノグラムにフォールバックする。
 */
-function logoHtml(co, size) {
+
+/* 正方形モノグラム */
+function monogramHtml(co, size) {
   const px = size || 24;
-  const fallback =
-    '<svg viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'>' +
-    '<text x=\'20\' y=\'20\' text-anchor=\'middle\' dominant-baseline=\'central\' ' +
-    'font-family=\'Arial,Helvetica,sans-serif\' font-size=\'' + monoSize(co.mono) + '\' ' +
-    'font-weight=\'700\' fill=\'' + co.color + '\'>' + co.mono + '</text></svg>';
-  return '<img src="assets/logos/' + co.id + '.svg" alt="' + co.short + '" ' +
-         'width="' + px + '" height="' + px + '" ' +
-         'onerror="this.outerHTML=' + JSON.stringify(fallback).replace(/"/g, '&quot;') + '">';
+  return '<svg viewBox="0 0 40 40" width="' + px + '" height="' + px + '" ' +
+         'role="img" aria-label="' + co.short + '">' +
+         '<text x="20" y="20" text-anchor="middle" dominant-baseline="central" ' +
+         'font-family="Arial,Helvetica,sans-serif" font-size="' + monoSize(co.mono) + '" ' +
+         'font-weight="700" letter-spacing="-0.4" fill="' + co.color + '">' + co.mono + '</text></svg>';
 }
+
+/* 公式ワードマーク（未取得の企業はモノグラムを返す） */
+function wordmarkHtml(co, height) {
+  const h = height || 18;
+  if (!co.logo) return monogramHtml(co, h);
+
+  /* 縦分割スプライトのロゴは指定行だけを切り出して表示する */
+  if (co.crop) {
+    const w = Math.round(h * co.ar);
+    return '<span class="wm wm--clip" style="height:' + h + 'px;width:' + w + 'px">' +
+             '<img src="' + co.logo + '" alt="' + co.short + '" ' +
+             'style="width:' + w + 'px;height:' + (h * co.crop.rows) + 'px;' +
+             'transform:translateY(-' + (h * co.crop.row) + 'px)">' +
+           '</span>';
+  }
+  return '<img class="wm" src="' + co.logo + '" alt="' + co.short + '" ' +
+         'style="height:' + h + 'px;width:auto;max-width:100%;object-fit:contain">';
+}
+
+/* 後方互換：既存呼び出し用のエイリアス */
+function logoHtml(co, size) { return monogramHtml(co, size); }
 
 function monoSize(mono) {
   return mono.length >= 3 ? 13 : mono.length === 2 ? 17 : 23;
+}
+
+/* ピン内でワードマークを表示する際の幅（高さ22px基準、上限78px） */
+function wordmarkWidth(co, h) {
+  const height = h || 22;
+  if (!co.logo || !co.ar) return height;
+  return Math.min(78, Math.max(26, Math.round(height * co.ar)));
 }
 
 /* 施設種別を優先度順に並べた代表種別（バッジ表示用） */

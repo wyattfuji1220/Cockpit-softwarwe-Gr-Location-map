@@ -23,6 +23,7 @@ const COMPANIES = [
   {
     id: 'pas', name: 'パナソニック オートモーティブシステムズ', short: 'パナソニックAS',
     nameEn: 'Panasonic Automotive Systems', mono: 'PAS', color: '#3E6B9C',
+    logo: 'assets/logos/official/pas.svg', ar: 3.326,
     hqCountry: '日本', url: 'https://automotive.panasonic.com/',
     category: 'コックピットシステム / IVI',
     products: 'コックピットドメインコントローラ、車載インフォテインメント、HUD、車載カメラ、ADAS、車載スピーカー',
@@ -31,6 +32,7 @@ const COMPANIES = [
   {
     id: 'dten', name: '株式会社デンソーテン', short: 'デンソーテン',
     nameEn: 'DENSO TEN Limited', mono: 'DT', color: '#A84A50',
+    logo: 'assets/logos/official/dten.png', ar: 8.522,
     hqCountry: '日本', url: 'https://www.denso-ten.com/jp/',
     category: 'IVI / ECU',
     products: 'ディスプレイオーディオ、カーナビゲーション、車載オーディオ、ミリ波レーダー、エンジンECU、ドライブレコーダー',
@@ -39,6 +41,7 @@ const COMPANIES = [
   {
     id: 'vist', name: 'ビステオン', short: 'ビステオン',
     nameEn: 'Visteon Corporation', mono: 'V', color: '#5F97A8',
+    logo: 'assets/logos/official/vist.svg', ar: 4.402,
     hqCountry: '米国', url: 'https://www.visteon.com/japan/default.aspx',
     category: 'デジタルコックピット / ディスプレイ',
     products: 'デジタルインストルメントクラスタ、SmartCore™ コックピットドメインコントローラ、車載ディスプレイ、AllGo® インフォテインメント',
@@ -47,6 +50,7 @@ const COMPANIES = [
   {
     id: 'nseiki', name: '日本精機株式会社', short: '日本精機',
     nameEn: 'NIPPON SEIKI CO., LTD.', mono: 'NS', color: '#2C4670',
+    logo: 'assets/logos/official/nseiki.png', ar: 13.5,
     hqCountry: '日本', url: 'https://www.nippon-seiki.co.jp/',
     category: 'メータ / HUD',
     products: '四輪・二輪車用コンビネーションメータ、ヘッドアップディスプレイ(HUD)、車載ディスプレイ、有機ELデバイス、センサ',
@@ -55,6 +59,7 @@ const COMPANIES = [
   {
     id: 'desay', name: 'Desay SV（德赛西威）', short: 'Desay SV',
     nameEn: 'Huizhou Desay SV Automotive Co., Ltd.', mono: 'DS', color: '#C4794E',
+    logo: null, ar: 0,
     hqCountry: '中国', url: 'https://jp.desaysv.com/',
     category: 'コックピットDCU / IVI',
     products: 'スマートコックピットドメインコントローラ、車載インフォテインメント、ディスプレイ、インテリジェント運転支援（IPU）、車載ネットワーク',
@@ -63,6 +68,7 @@ const COMPANIES = [
   {
     id: 'lge', name: 'LGエレクトロニクス', short: 'LGエレクトロニクス',
     nameEn: 'LG Electronics Inc.', mono: 'LG', color: '#94405F',
+    logo: 'assets/logos/official/lge.svg', ar: 2.273,
     hqCountry: '韓国', url: 'https://www.lg.com/jp/',
     category: '車載インフォテインメント',
     products: '車載インフォテインメント（AVN）、テレマティクス、ディスプレイオーディオ、車載カメラ、e-Powertrain（LG Magna）',
@@ -71,6 +77,8 @@ const COMPANIES = [
   {
     id: 'lgd', name: 'LGディスプレイ', short: 'LGディスプレイ',
     nameEn: 'LG Display Co., Ltd.', mono: 'LD', color: '#6E5B8E',
+    /* 公式ヘッダーロゴは縦2段スプライト（上=白抜き／下=濃色）。下段を切り出して使用 */
+    logo: 'assets/logos/official/lgd_sprite.png', ar: 5.229, crop: { rows: 2, row: 1 },
     hqCountry: '韓国', url: 'https://www.lgdisplay.com/kor',
     category: '車載ディスプレイパネル',
     products: '車載用LCDパネル、車載用OLED（P-OLED/Tandem OLED）、LTPS LCD、大型ピラーtoピラーディスプレイ',
@@ -79,6 +87,7 @@ const COMPANIES = [
   {
     id: 'pioneer', name: 'パイオニア株式会社', short: 'パイオニア',
     nameEn: 'Pioneer Corporation', mono: 'P', color: '#2E7268',
+    logo: 'assets/logos/official/pioneer.svg', ar: 6.688,
     hqCountry: '日本', url: 'https://jpn.pioneer/ja/',
     category: 'カーナビ / ディスプレイオーディオ',
     products: 'カーナビゲーション（楽ナビ/サイバーナビ）、ディスプレイオーディオ、カーオーディオ、ドライブレコーダー、有機ELデバイス（東北パイオニア）',
@@ -87,6 +96,7 @@ const COMPANIES = [
   {
     id: 'molex', name: 'Molex（モレックス）', short: 'Molex',
     nameEn: 'Molex, LLC', mono: 'MX', color: '#B08A3E',
+    logo: null, ar: 0,
     hqCountry: '米国', url: 'https://www.molex.com/ja-jp/home',
     category: 'コネクタ / インターコネクト',
     products: '車載コネクタ、ワイヤーハーネス部品、車載イーサネット/高速データコネクタ、アンテナ、同軸ケーブルアセンブリ',
@@ -95,6 +105,7 @@ const COMPANIES = [
   {
     id: 'harman', name: 'ハーマンインターナショナル', short: 'ハーマン',
     nameEn: 'HARMAN International Industries', mono: 'H', color: '#7F8C4C',
+    logo: 'assets/logos/official/harman.svg', ar: 1.707,
     hqCountry: '米国', url: 'https://www.harman.com/',
     category: '車載オーディオ / インフォテインメント',
     products: 'プレミアムカーオーディオ（JBL/harman kardon/Mark Levinson/Bowers & Wilkins）、車載インフォテインメント、テレマティクス、Ready Upgradeプラットフォーム',
@@ -103,6 +114,7 @@ const COMPANIES = [
   {
     id: 'harada', name: '原田工業株式会社', short: '原田工業',
     nameEn: 'HARADA INDUSTRY CO., LTD.', mono: 'HR', color: '#99694C',
+    logo: 'assets/logos/official/harada.png', ar: 3.563,
     hqCountry: '日本', url: 'https://www.harada.com/jp/',
     category: '車載アンテナ',
     products: '車載アンテナ（シャークフィン/ルーフ/ガラス/フィルム）、車載通信モジュール、5G/V2Xアンテナ、TELアンテナ',
@@ -111,6 +123,7 @@ const COMPANIES = [
   {
     id: 'yokowo', name: '株式会社ヨコオ', short: 'ヨコオ',
     nameEn: 'YOKOWO CO., LTD.', mono: 'YK', color: '#556B82',
+    logo: 'assets/logos/official/yokowo.svg', ar: 5.685,
     hqCountry: '日本', url: 'https://www.yokowo.co.jp/',
     category: '車載アンテナ / コネクタ',
     products: '車載アンテナ、車載用同軸コネクタ・ケーブルアセンブリ、コンタクトプローブ（半導体検査）、医療用機器部品',
@@ -510,15 +523,15 @@ const SITES = [
 { c:'lge', n:'LG Magna e-Powertrain（仁川）', ln:'LG Magna e-Powertrain Co., Ltd.', t:['mfg','rd'], reg:'韓国', ctry:'韓国',
   addr:'韓国 仁川広域市', lat:37.5500, lng:126.6800,
   prod:'電動パワートレイン（モーター・インバータ）の開発・製造', conf:'medium', geo:'city', src:'LG Magna公式' },
-{ c:'lge', n:'ハイフォン工場', ln:'LG Electronics Vietnam Haiphong', t:['mfg'], reg:'アジア', ctry:'ベトナム',
+{ c:'lge', n:'ハイフォン工場', ln:'LG Electronics Vietnam Haiphong Co., Ltd.', t:['mfg'], reg:'アジア', ctry:'ベトナム',
   addr:'ベトナム ハイフォン市', lat:20.8449, lng:106.6881,
-  prod:'車載インフォテインメント／カメラモジュールの製造', conf:'medium', geo:'city', src:'公式・二次情報' },
+  prod:'車載インフォテインメント（AVN）／テレマティクス／カメラモジュールの製造。VS事業本部のアジア主力生産拠点', conf:'high', geo:'city', src:'担当者確認＋公式情報' },
 { c:'lge', n:'南京工場', ln:'LG Electronics (Nanjing)', t:['mfg'], reg:'中国', ctry:'中国',
   addr:'中国 江蘇省 南京市', lat:32.0603, lng:118.7969,
   prod:'車載機器を含む電子機器の製造', conf:'medium', geo:'city', src:'二次情報' },
-{ c:'lge', n:'ラモス・アリスペ工場', ln:'LG Electronics Mexico (Ramos Arizpe)', t:['mfg'], reg:'中南米', ctry:'メキシコ',
-  addr:'メキシコ コアウイラ州 ラモス・アリスペ', lat:25.5417, lng:-100.9583,
-  prod:'北米向け車載インフォテインメントの製造', conf:'medium', geo:'city', src:'二次情報' },
+{ c:'lge', n:'モンテレイ工場', ln:'LG Electronics Monterrey Mexico, S.A. de C.V.', t:['mfg'], reg:'中南米', ctry:'メキシコ',
+  addr:'メキシコ ヌエボレオン州 モンテレイ市', lat:25.6866, lng:-100.3161,
+  prod:'北米向け車載インフォテインメント／テレマティクスの製造。VS事業本部の北米主力生産拠点', conf:'high', geo:'city', src:'担当者確認' },
 { c:'lge', n:'北米車載拠点（ファーミントンヒルズ）', ln:'LG Electronics USA - Vehicle Solutions', t:['rd','sales'], reg:'北米', ctry:'米国',
   addr:'米国 ミシガン州 ファーミントンヒルズ', lat:42.4989, lng:-83.3677,
   prod:'北米OEM向け車載製品の開発・営業', conf:'medium', geo:'city', src:'二次情報' },
@@ -539,9 +552,9 @@ const SITES = [
 { c:'lgd', n:'坡州（パジュ）工場', ln:'LG Display Paju Plant', t:['mfg','rd'], reg:'韓国', ctry:'韓国',
   addr:'韓国 京畿道 坡州市 月籠面', lat:37.8154, lng:126.7943,
   prod:'大型LCD／OLEDパネル、車載用ディスプレイ。敷地172万m²、R&D施設併設', conf:'high', geo:'city', src:'公式・報道' },
-{ c:'lgd', n:'亀尾（クミ）工場', ln:'LG Display Gumi Plant', t:['mfg'], reg:'韓国', ctry:'韓国',
+{ c:'lgd', n:'亀尾（クミ）工場【前工程】', ln:'LG Display Gumi Plant', t:['mfg'], reg:'韓国', ctry:'韓国',
   addr:'韓国 慶尚北道 亀尾市', lat:36.1195, lng:128.3446,
-  prod:'中小型ディスプレイ（車載用LTPS LCD／P-OLEDの中核拠点）', conf:'high', geo:'city', src:'公式・報道' },
+  prod:'車載ディスプレイの前工程（アレイ・セル形成）。車載用LTPS LCD／P-OLEDの中核拠点', conf:'high', geo:'city', src:'担当者確認＋公式・報道' },
 { c:'lgd', n:'LGサイエンスパーク（麻谷）R&D', ln:'LG Display R&D Center', t:['rd'], reg:'韓国', ctry:'韓国',
   addr:'韓国 ソウル特別市江西区 麻谷', lat:37.5655, lng:126.8360,
   prod:'次世代ディスプレイの研究開発', conf:'medium', geo:'city', src:'公式・二次情報' },
@@ -554,9 +567,9 @@ const SITES = [
 { c:'lgd', n:'煙台モジュール工場', ln:'LG Display (Yantai) Co., Ltd.', t:['mfg'], reg:'中国', ctry:'中国',
   addr:'中国 山東省 煙台市', lat:37.4638, lng:121.4478,
   prod:'ディスプレイモジュール組立', conf:'medium', geo:'city', src:'二次情報' },
-{ c:'lgd', n:'ハイフォンモジュール工場', ln:'LG Display Vietnam Haiphong Co., Ltd.', t:['mfg'], reg:'アジア', ctry:'ベトナム',
+{ c:'lgd', n:'ハイフォン工場【後工程】', ln:'LG Display Vietnam Haiphong Co., Ltd.', t:['mfg'], reg:'アジア', ctry:'ベトナム',
   addr:'ベトナム ハイフォン市', lat:20.8449, lng:106.6881,
-  prod:'ディスプレイモジュール組立（中小型・車載含む）', conf:'high', geo:'city', src:'公式・報道' },
+  prod:'車載ディスプレイの後工程（モジュール組立）。亀尾工場の前工程を受けた最終工程を担当', conf:'high', geo:'city', src:'担当者確認＋公式・報道' },
 { c:'lgd', n:'ヴロツワフ工場', ln:'LG Display Poland Sp. z o.o.', t:['mfg'], reg:'欧州', ctry:'ポーランド',
   addr:'ポーランド ヴロツワフ', lat:51.1079, lng:17.0385,
   prod:'欧州向けディスプレイモジュール組立', conf:'medium', geo:'city', src:'二次情報' },

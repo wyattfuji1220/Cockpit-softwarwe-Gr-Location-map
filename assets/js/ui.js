@@ -70,10 +70,29 @@ const UI = (function () {
       </div>
 
       <div class="fgroup">
+        <div class="fgroup__head"><span class="fgroup__title">マーカー表示</span></div>
+        <div class="seg" id="seg">
+          <button class="seg__b is-on" data-mode="auto">自動</button>
+          <button class="seg__b" data-mode="mono">記号</button>
+          <button class="seg__b" data-mode="logo">ロゴ</button>
+        </div>
+        <div class="sidebar__note" style="margin-top:8px">
+          「自動」はズーム${MapApp.LOGO_ZOOM}以上で公式ロゴ表示に切り替わります。
+        </div>
+      </div>
+
+      <div class="fgroup">
         <button class="btn" id="btnFit" style="width:100%;margin-bottom:8px">表示中の拠点にズーム</button>
         <button class="btn" id="btnReset" style="width:100%">初期表示に戻す</button>
       </div>
     `;
+
+    document.getElementById('seg').addEventListener('click', e => {
+      const b = e.target.closest('.seg__b');
+      if (!b) return;
+      document.querySelectorAll('.seg__b').forEach(x => x.classList.toggle('is-on', x === b));
+      MapApp.setMarkerMode(b.dataset.mode);
+    });
 
     /* 施設種別 */
     document.getElementById('fTypes').innerHTML = Object.keys(FACILITY_TYPES)
@@ -198,8 +217,9 @@ const UI = (function () {
 
     document.getElementById('detailBody').innerHTML = `
       <div class="detail__head">
-        <div class="tt__co" style="margin-bottom:10px">
-          <i style="background:${co.color}"></i>${co.name}
+        <div class="tt__brand">
+          <span class="tt__wm">${wordmarkHtml(co, 22)}</span>
+          <span class="tt__cot" style="border-color:${co.color}">${co.short}</span>
         </div>
         <div class="h2">${site.n}</div>
         <div style="font-size:12px;color:var(--ink-2);margin:6px 0 12px">${site.ln}</div>
