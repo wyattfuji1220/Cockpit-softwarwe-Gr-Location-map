@@ -5,10 +5,14 @@
 const UI = (function () {
 
   let scope = [];
+  const CONF_LABEL = { high: '確度 高（公式に住所）', medium: '確度 中（公式に都市）', low: '確度 低（要確認）' };
+  const CONF_COLOR = { high: '#4E7C74', medium: '#A98F5F', low: '#B5793F' };
+
   const state = {
     companies: new Set(),
     types: new Set(Object.keys(FACILITY_TYPES)),
     regions: new Set(),
+    confs: new Set(['high', 'medium', 'low']),
     q: ''
   };
 
@@ -63,6 +67,14 @@ const UI = (function () {
 
       <div class="fgroup">
         <div class="fgroup__head">
+          <span class="fgroup__title">データ確度</span>
+          <button class="fgroup__act" data-all="confs">すべて</button>
+        </div>
+        <div id="fConfs"></div>
+      </div>
+
+      <div class="fgroup">
+        <div class="fgroup__head">
           <span class="fgroup__title">企業</span>
           <button class="fgroup__act" data-all="companies">すべて</button>
         </div>
@@ -104,6 +116,10 @@ const UI = (function () {
       document.getElementById('fRegions').innerHTML =
         regionsInScope().map(rg => row('regions', rg, rg, null)).join('');
     }
+
+    /* データ確度 */
+    document.getElementById('fConfs').innerHTML = ['high', 'medium', 'low']
+      .map(k => row('confs', k, CONF_LABEL[k], CONF_COLOR[k])).join('');
 
     /* 企業 */
     document.getElementById('fCompanies').innerHTML = COMPANIES
@@ -155,6 +171,7 @@ const UI = (function () {
       state.companies.has(s.c) &&
       s.t.some(t => state.types.has(t)) &&
       state.regions.has(s.reg) &&
+      state.confs.has(s.conf) &&
       (!state.q || matches(s))
     );
   }
@@ -178,6 +195,7 @@ const UI = (function () {
       let n;
       if (g === 'companies')   n = list.filter(s => s.c === v).length;
       else if (g === 'types')  n = list.filter(s => s.t.includes(v)).length;
+      else if (g === 'confs')  n = list.filter(s => s.conf === v).length;
       else                     n = list.filter(s => s.reg === v).length;
       el.textContent = n;
       el.closest('.chk').classList.toggle('is-off', n === 0);
@@ -201,7 +219,15 @@ const UI = (function () {
       .map(k => `<div class="legend__row">
         <span class="legend__ico" style="background:${TYPE_COLOR[k]}">${TYPE_ICON[k]}</span>
         <span>${FACILITY_TYPES[k].label}　<span style="color:var(--ink-4)">${FACILITY_TYPES[k].desc}</span></span>
-      </div>`).join('');
+      </div>`).join('') + `
+      <div class="legend__row" style="margin-top:9px;padding-top:9px;border-top:1px solid var(--line)">
+        <span class="legend__ico" style="background:var(--conf-low);font-size:8px;color:#fff;font-weight:700">!</span>
+        <span>所在地 要確認　<span style="color:var(--ink-4)">二次情報ベース</span></span>
+      </div>
+      <div class="legend__row">
+        <span class="legend__ico" style="background:var(--conf-low);font-size:7.5px;color:#fff;font-weight:700">都</span>
+        <span>都市未特定　<span style="color:var(--ink-4)">首都に仮プロット</span></span>
+      </div>`;
   }
 
   /* ---------- 詳細パネル ---------- */
@@ -213,7 +239,8 @@ const UI = (function () {
     }).join(' ');
 
     const confLabel = { high: '高（公式サイトに住所記載）', medium: '中（公式に都市名まで記載）', low: '低（二次情報・要確認）' }[site.conf];
-    const geoLabel  = { exact: '住所ベース', city: '市区町村中心', country: '国中心（概算）' }[site.geo];
+    const geoLabel  = { exact: '住所ベース', city: '市区町村中心',
+                        country: `首都（${site.capital || '—'}）に仮プロット` }[site.geo];
 
     document.getElementById('detailBody').innerHTML = `
       <div class="detail__head">
@@ -225,6 +252,17 @@ const UI = (function () {
         <div style="font-size:12px;color:var(--ink-2);margin:6px 0 12px">${site.ln}</div>
         <div>${tags}${site.conf === 'low' ? ' <span class="tag tag--warn">要確認</span>' : ''}</div>
       </div>
+
+      ${site.capital ? `<div class="detail__sec" style="background:rgba(181,121,63,.06)">
+        <div class="detail__k" style="color:var(--conf-low)">⚠ 所在都市 未特定</div>
+        <div class="detail__v">
+          公開情報では国名までしか確認できていないため、<b>${site.ctry}の首都（${site.capital}）に仮プロット</b>しています。
+          実際の所在地は異なります。仕入先への確認が必要です。
+        </div>
+      </div>` : site.conf === 'low' ? `<div class="detail__sec" style="background:rgba(181,121,63,.06)">
+        <div class="detail__k" style="color:var(--conf-low)">⚠ 所在地 要確認</div>
+        <div class="detail__v">二次情報をもとにしたプロットです。番地・施設の特定には確認が必要です。</div>
+      </div>` : ''}
 
       <div class="detail__sec">
         <div class="detail__k">所在地</div>

@@ -72,20 +72,27 @@ const MapApp = (function () {
   function buildMarker(site, mode) {
     const co = COMPANY_MAP[site.c];
     const pt = primaryType(site.t);
-    const flag = site.conf === 'low' ? '<div class="mk__flag" title="要確認">!</div>' : '';
+
+    /* 確度低＝破線リング、都市未特定（首都に仮プロット）＝「都」バッジで区別 */
+    const flag = site.conf === 'low'
+      ? '<div class="mk__flag' + (site.capital ? ' mk__flag--cap' : '') + '" title="' +
+        (site.capital ? '都市未特定：' + site.capital + 'に仮プロット' : '所在地要確認') + '">' +
+        (site.capital ? '都' : '!') + '</div>'
+      : '';
+    const cls = site.conf === 'low' ? ' mk--unconfirmed' : '';
 
     let html, w, h;
     if (mode === 'logo' && co.logo) {
       w = wordmarkWidth(co, 22); h = 26;
       html =
-        '<div class="mk mk--pill" style="--co:' + co.color + ';--tc:' + TYPE_COLOR[pt] + '">' +
+        '<div class="mk mk--pill' + cls + '" style="--co:' + co.color + ';--tc:' + TYPE_COLOR[pt] + '">' +
           '<div class="mk__pin mk__pin--pill" style="width:' + w + 'px">' + wordmarkHtml(co, 15) + '</div>' +
           '<div class="mk__badge">' + TYPE_ICON[pt] + '</div>' + flag +
         '</div>';
     } else {
       w = 30; h = 30;
       html =
-        '<div class="mk" style="--co:' + co.color + ';--tc:' + TYPE_COLOR[pt] + '">' +
+        '<div class="mk' + cls + '" style="--co:' + co.color + ';--tc:' + TYPE_COLOR[pt] + '">' +
           '<div class="mk__pin">' + monogramHtml(co, 24) + '</div>' +
           '<div class="mk__badge">' + TYPE_ICON[pt] + '</div>' + flag +
         '</div>';
@@ -129,7 +136,15 @@ const MapApp = (function () {
     const warn = site.conf === 'low'
       ? '<span class="tag tag--warn">要確認</span>' : '';
 
-    const geoNote = site.geo === 'country' ? '国レベル概算'
+    /* 都市未特定の拠点は首都への仮プロットであることを明示する */
+    const capNote = site.capital
+      ? '<div class="tt__alert">⚠ 所在都市は未特定です。国内の首都（' + site.capital +
+        '）に仮プロットしています。</div>'
+      : (site.conf === 'low'
+          ? '<div class="tt__alert">⚠ 所在地は二次情報ベースです。確認が必要です。</div>'
+          : '');
+
+    const geoNote = site.geo === 'country' ? '首都に仮プロット'
                   : site.geo === 'city' ? '市区町村レベル'
                   : '住所ベース';
 
@@ -140,6 +155,7 @@ const MapApp = (function () {
         '<div class="tt__name">' + site.n + '</div>' +
         '<div class="tt__ln">' + site.ln + '</div>' +
         '<div class="tt__tags">' + tags + warn + '</div>' +
+        capNote +
         '<div class="tt__row"><div class="tt__k">所在地</div><div class="tt__v">' + site.addr + '</div></div>' +
         '<div class="tt__row"><div class="tt__k">主要製品<br>／機能</div><div class="tt__v">' + site.prod + '</div></div>' +
         '<div class="tt__foot"><span>出典: ' + site.src + '</span><span>座標: ' + geoNote + '</span></div>' +

@@ -122,10 +122,11 @@
         }).join(' ')}</td>
         <td>${s.reg}</td>
         <td style="white-space:nowrap">${s.ctry}</td>
-        <td style="min-width:200px">${s.addr}</td>
+        <td style="min-width:200px">${s.addr}${s.capital
+          ? `<div style="font-size:10.5px;color:var(--conf-low);margin-top:3px">⚠ 首都（${s.capital}）に仮プロット</div>` : ''}</td>
         <td style="min-width:260px;font-size:11.5px">${s.prod}</td>
         <td style="white-space:nowrap">${s.conf === 'low'
-          ? '<span class="tag tag--warn">要確認</span>' : CONF[s.conf]}</td>
+          ? `<span class="tag tag--warn">${s.capital ? '都市未特定' : '要確認'}</span>` : CONF[s.conf]}</td>
       </tr>`;
     }).join('');
 
@@ -142,11 +143,12 @@
   [q, fCo, fType, fReg].forEach(el => el.addEventListener('input', render));
 
   document.getElementById('csv').addEventListener('click', () => {
-    const head = ['企業','拠点名','現地法人名','施設種別','地域','国','所在地','主要製品／機能','緯度','経度','確度','座標精度','出典'];
+    const head = ['企業','拠点名','現地法人名','施設種別','地域','国','所在地','主要製品／機能','緯度','経度','確度','座標精度','仮プロット先の首都','出典'];
     const esc = v => '"' + String(v).replace(/"/g, '""') + '"';
     const body = rows().map(s => [
       COMPANY_MAP[s.c].name, s.n, s.ln, typeLabels(s.t).join('／'), s.reg, s.ctry,
-      s.addr, s.prod, s.lat.toFixed(5), s.lng.toFixed(5), CONF[s.conf], s.geo, s.src
+      s.addr, s.prod, s.lat.toFixed(5), s.lng.toFixed(5), CONF[s.conf],
+      s.geo === 'country' ? '首都に仮プロット' : s.geo, s.capital || '', s.src
     ].map(esc).join(','));
     const csv = '﻿' + [head.map(esc).join(','), ...body].join('\r\n');
     const a = document.createElement('a');
