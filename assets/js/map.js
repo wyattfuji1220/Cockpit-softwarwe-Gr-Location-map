@@ -10,14 +10,14 @@ const MapApp = (function () {
              scope: () => SITES.filter(s => s.reg === '日本') }
   };
 
-  /* ズーム閾値：これ以上に拡大すると公式ロゴ（ワードマーク）表示に切り替える */
-  const LOGO_ZOOM = 6;
+  /* 「自動」モードでロゴ表示に切り替わるズーム閾値 */
+  const LOGO_ZOOM = 4;
 
   let map, layer, view, scope;
   const markers = new Map();   // site.id -> L.Marker
   let selectedId = null;
   let lastList = [];
-  let markerMode = 'auto';     // 'auto' | 'mono' | 'logo'
+  let markerMode = 'logo';     // 'logo'（既定） | 'auto' | 'mono'
 
   /* 現在の実効表示モード */
   function effectiveMode() {

@@ -33,7 +33,9 @@
       "WebFetch(domain:ja.wikipedia.org)",
       "Bash(git commit -q -m '[データ] 担当者情報にもとづき要確認4拠点を確定 *)",
       "Bash(echo \"=== 直近30分の画像ファイル ===\"; find /c/Users/media/AppData/Local/Temp /c/Users/media/Downloads /c/Users/media/OneDrive/デスクトップ -maxdepth 5 -type f \\\\\\( -iname \"*.png\" -o -iname \"*.jpg\" -o -iname \"*.jpeg\" -o -iname \"*.svg\" -o -iname \"*.webp\" -o -iname \"*.gif\" \\\\\\) -newermt \"-30 minutes\" 2>/dev/null | head -20; echo \"=== claude関連ディレクトリ ===\"; ls -lat /c/Users/media/AppData/Local/Temp/claude/ 2>/dev/null | head -6)",
-      "Bash(git commit -q -m '[UI] Desay SV・Molex・ハーマン・ビステオンの公式ロゴを導入し全12社を網羅 *)"
+      "Bash(git commit -q -m '[UI] Desay SV・Molex・ハーマン・ビステオンの公式ロゴを導入し全12社を網羅 *)",
+      "Bash(sed -i 's|^| 自動（既定） |; ' /dev/null)",
+      "Bash(git commit -q -m '[修正] 初期表示でロゴが出ない不具合を修正 *)"
     ]
   }
 }

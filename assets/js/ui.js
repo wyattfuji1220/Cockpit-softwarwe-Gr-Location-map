@@ -84,12 +84,13 @@ const UI = (function () {
       <div class="fgroup">
         <div class="fgroup__head"><span class="fgroup__title">マーカー表示</span></div>
         <div class="seg" id="seg">
-          <button class="seg__b is-on" data-mode="auto">自動</button>
+          <button class="seg__b is-on" data-mode="logo">ロゴ</button>
+          <button class="seg__b" data-mode="auto">自動</button>
           <button class="seg__b" data-mode="mono">記号</button>
-          <button class="seg__b" data-mode="logo">ロゴ</button>
         </div>
         <div class="sidebar__note" style="margin-top:8px">
-          「自動」はズーム${MapApp.LOGO_ZOOM}以上で公式ロゴ表示に切り替わります。
+          「記号」は企業カラーの円形マークで拠点密度を見やすくします。<br>
+          「自動」はズーム${MapApp.LOGO_ZOOM}未満で記号、以上でロゴに自動切替します。
         </div>
       </div>
 
