@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概要 ｜ サプライヤー拠点マップ ｜ Cockpit Software Gr.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__brand">
+    <span class="nav__mark">Cockpit Software Gr.</span>
+    <span class="nav__sub">Supplier Footprint Intelligence</span>
+  </div>
+  <div class="nav__links">
+    <a class="nav__link is-active" href="index.html">概要</a>
+    <a class="nav__link" href="world.html">世界地図</a>
+    <a class="nav__link" href="japan.html">日本地図</a>
+    <a class="nav__link" href="table.html">拠点一覧</a>
+  </div>
+  <div class="nav__meta">担当仕入先 12社</div>
+</nav>
+
+<div class="page">
+
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__grid">
+        <div>
+          <div class="eyebrow">Supplier Location Intelligence</div>
+          <h1 class="h1">担当仕入先12社の<br>グローバル拠点を一枚の地図に。</h1>
+          <p class="lede">
+            コックピットソフトウェア領域の担当サプライヤーについて、本社・開発拠点・製造拠点・営業拠点を
+            公開情報から一元化しました。世界地図／日本地図の2ビューで、企業・施設種別・地域による
+            絞り込みと拠点単位の詳細確認ができます。
+          </p>
+          <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn--primary" href="world.html">世界地図を開く</a>
+            <a class="btn" href="japan.html">日本地図を開く</a>
+            <a class="btn" href="table.html">拠点一覧を見る</a>
+          </div>
+        </div>
+        <div class="kpis" id="kpis"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <div class="eyebrow">Coverage</div>
+        <h2 class="h2">拠点分布サマリー</h2>
+      </div>
+    </div>
+    <div id="matrix"></div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <div class="eyebrow">Suppliers</div>
+        <h2 class="h2">担当仕入先一覧</h2>
+      </div>
+      <div style="font-size:11px;color:var(--ink-3)">バーは施設種別の構成比（本社／開発／製造／営業）</div>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <div class="eyebrow">Data Quality</div>
+        <h2 class="h2">データの確度と今後の精緻化ポイント</h2>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)">
+      <div class="card"><div class="detail__k">確度 高</div>
+        <div class="kpi__n" id="cHigh" style="font-size:30px">0</div>
+        <div class="detail__v" style="margin-top:8px">各社公式サイトの拠点一覧・会社概要に住所が明記されている拠点。</div></div>
+      <div class="card"><div class="detail__k">確度 中</div>
+        <div class="kpi__n" id="cMed" style="font-size:30px;color:var(--gold)">0</div>
+        <div class="detail__v" style="margin-top:8px">公式情報に都市名までの記載があり、番地レベルは未確認の拠点。</div></div>
+      <div class="card"><div class="detail__k">確度 低（要確認）</div>
+        <div class="kpi__n" id="cLow" style="font-size:30px;color:var(--conf-low)">0</div>
+        <div class="detail__v" style="margin-top:8px">二次情報ベース、または公式に国名までしか記載がない拠点。地図上では「!」バッジで識別できます。</div></div>
+    </div>
+    <p class="lede" style="margin-top:22px;font-size:13px">
+      本サイトは公開情報のみで構成しています。仕入先から直接入手した拠点情報や取引品目を追加すると、
+      サプライチェーンの実態把握という観点で精度が大きく向上します。
+    </p>
+  </section>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      出典：各社公式サイト（拠点一覧・会社概要・グループ会社一覧）、公式ニュースリリース、有価証券報告書・SEC提出書類、報道記事。<br>
+      企業ロゴおよび企業名は各社の商標です。本サイトは社内の担当業務把握を目的とした資料です。
+    </div>
+  </footer>
+
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/icons.js"></script>
+<script>
+(function () {
+  const cnt = t => SITES.filter(s => s.t.includes(t)).length;
+
+  /* --- KPI --- */
+  const kpis = [
+    [COMPANIES.length, '担当仕入先'],
+    [SITES.length, '収録拠点'],
+    [new Set(SITES.map(s => s.ctry)).size, '国・地域'],
+    [cnt('mfg'), '製造拠点']
+  ];
+  document.getElementById('kpis').innerHTML = kpis
+    .map(([n, l]) => `<div class="kpi"><div class="kpi__n">${n}</div><div class="kpi__l">${l}</div></div>`).join('');
+
+  /* --- 確度サマリー --- */
+  const byConf = c => SITES.filter(s => s.conf === c).length;
+  document.getElementById('cHigh').textContent = byConf('high');
+  document.getElementById('cMed').textContent  = byConf('medium');
+  document.getElementById('cLow').textContent  = byConf('low');
+
+  /* --- 地域×施設種別マトリクス --- */
+  const types = Object.keys(FACILITY_TYPES).sort((a,b)=>FACILITY_TYPES[a].order-FACILITY_TYPES[b].order);
+  const regs = REGIONS.filter(r => SITES.some(s => s.reg === r));
+  const cell = (r, t) => SITES.filter(s => s.reg === r && s.t.includes(t)).length;
+  const max = Math.max(...regs.flatMap(r => types.map(t => cell(r, t))));
+
+  document.getElementById('matrix').innerHTML = `
+    <div class="tablewrap"><table class="dt" style="min-width:640px">
+      <thead><tr><th>地域</th>${types.map(t=>`<th style="text-align:right">${FACILITY_TYPES[t].label}</th>`).join('')}<th style="text-align:right">合計</th></tr></thead>
+      <tbody>${regs.map(r => `<tr>
+        <td class="nm">${r}</td>
+        ${types.map(t => {
+          const v = cell(r, t);
+          const a = max ? (0.06 + 0.5 * v / max) : 0;
+          return `<td style="text-align:right;font-family:var(--font-mono);background:rgba(35,64,92,${v ? a.toFixed(3) : 0});color:${v ? 'var(--ink)' : 'var(--ink-4)'}">${v}</td>`;
+        }).join('')}
+        <td style="text-align:right;font-family:var(--font-mono);font-weight:600;color:var(--ink)">${SITES.filter(s=>s.reg===r).length}</td>
+      </tr>`).join('')}</tbody>
+      <tfoot><tr>
+        <th>合計</th>
+        ${types.map(t=>`<th style="text-align:right;font-family:var(--font-mono);color:var(--ink)">${cnt(t)}</th>`).join('')}
+        <th style="text-align:right;font-family:var(--font-mono);color:var(--ink)">${SITES.length}</th>
+      </tr></tfoot>
+    </table></div>`;
+
+  /* --- 企業カード --- */
+  document.getElementById('cards').innerHTML = COMPANIES.map(co => {
+    const mine = SITES.filter(s => s.c === co.id);
+    const seg = types.map(t => ({ t, n: mine.filter(s => s.t.includes(t)).length }));
+    const tot = seg.reduce((a, b) => a + b.n, 0) || 1;
+    return `<a class="card" href="world.html" style="--co:${co.color}">
+      <div class="card__top">
+        <span class="card__logo">${logoHtml(co, 28)}</span>
+        <span><span class="card__name">${co.name}</span><br>
+        <span class="card__cat">${co.category}　｜　本社: ${co.hqCountry}</span></span>
+      </div>
+      <div class="card__prod">${co.products}</div>
+      <div class="card__bar">${seg.map(s => s.n ? `<i style="width:${100*s.n/tot}%;background:${TYPE_COLOR[s.t]}" title="${FACILITY_TYPES[s.t].label} ${s.n}"></i>` : '').join('')}</div>
+      <div class="card__stats">
+        <span>拠点 <b>${mine.length}</b></span>
+        <span>国・地域 <b>${new Set(mine.map(s => s.ctry)).size}</b></span>
+        <span>製造 <b>${mine.filter(s => s.t.includes('mfg')).length}</b></span>
+        <span>開発 <b>${mine.filter(s => s.t.includes('rd')).length}</b></span>
+      </div>
+    </a>`;
+  }).join('');
+})();
+</script>
+</body>
+</html>

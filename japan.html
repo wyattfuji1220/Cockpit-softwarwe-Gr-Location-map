@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>日本地図 ｜ サプライヤー拠点マップ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__brand">
+    <span class="nav__mark">Cockpit Software Gr.</span>
+    <span class="nav__sub">Supplier Footprint Intelligence</span>
+  </div>
+  <div class="nav__links">
+    <a class="nav__link" href="index.html">概要</a>
+    <a class="nav__link" href="world.html">世界地図</a>
+    <a class="nav__link is-active" href="japan.html">日本地図</a>
+    <a class="nav__link" href="table.html">拠点一覧</a>
+  </div>
+  <div class="nav__meta">担当仕入先 12社</div>
+</nav>
+
+<div class="page">
+  <div class="maplayout">
+
+    <aside class="sidebar">
+      <div class="sidebar__head">
+        <h1 class="sidebar__title">日本国内拠点マップ</h1>
+        <p class="sidebar__note">
+          担当仕入先12社の日本国内拠点。海外資本の企業は日本法人の拠点を表示します。<br>
+          マーカーにカーソルを合わせると詳細、クリックで拡張情報を表示します。
+        </p>
+      </div>
+      <div id="filters"></div>
+    </aside>
+
+    <main class="mapwrap">
+      <div id="map"></div>
+
+      <div class="float float--stat">
+        <div class="float__title">表示中の拠点</div>
+        <div><span class="stat__num" id="statTotal">0</span><span class="stat__unit">拠点</span></div>
+        <div class="stat__break">
+          <div class="stat__cell"><b id="statHq">0</b>本社</div>
+          <div class="stat__cell"><b id="statRd">0</b>開発</div>
+          <div class="stat__cell"><b id="statMfg">0</b>製造</div>
+        </div>
+      </div>
+
+      <div class="float float--legend">
+        <div class="float__title">凡例｜施設種別</div>
+        <div id="legendRows"></div>
+        <div class="legend__note">
+          リング色＝企業／中央＝企業ロゴ／右下バッジ＝施設種別<br>
+          左上の「!」＝所在地が二次情報ベースで要確認の拠点
+        </div>
+      </div>
+
+      <aside class="detail" id="detail">
+        <button class="detail__close" id="detailClose" aria-label="閉じる">×</button>
+        <div id="detailBody"></div>
+      </aside>
+    </main>
+
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/map.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>UI.init('japan');</script>
+</body>
+</html>

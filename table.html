@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>拠点一覧 ｜ サプライヤー拠点マップ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__brand">
+    <span class="nav__mark">Cockpit Software Gr.</span>
+    <span class="nav__sub">Supplier Footprint Intelligence</span>
+  </div>
+  <div class="nav__links">
+    <a class="nav__link" href="index.html">概要</a>
+    <a class="nav__link" href="world.html">世界地図</a>
+    <a class="nav__link" href="japan.html">日本地図</a>
+    <a class="nav__link is-active" href="table.html">拠点一覧</a>
+  </div>
+  <div class="nav__meta">担当仕入先 12社</div>
+</nav>
+
+<div class="page">
+  <section class="section" style="max-width:1440px">
+    <div class="section__head">
+      <div>
+        <div class="eyebrow">Master Data</div>
+        <h1 class="h2">拠点一覧</h1>
+      </div>
+      <div style="font-size:11px;color:var(--ink-3)">見出しクリックで並べ替え</div>
+    </div>
+
+    <div class="toolbar">
+      <input class="search" id="q" type="search" placeholder="企業・拠点名・住所・製品で検索" style="width:320px">
+      <select class="search" id="fCo" style="width:200px"></select>
+      <select class="search" id="fType" style="width:150px"></select>
+      <select class="search" id="fReg" style="width:150px"></select>
+      <span style="font-size:12px;color:var(--ink-3);margin-left:auto" id="count"></span>
+      <button class="btn btn--primary" id="csv">CSV出力</button>
+    </div>
+
+    <div class="tablewrap">
+      <table class="dt">
+        <thead><tr>
+          <th data-k="co">企業</th>
+          <th data-k="n">拠点名</th>
+          <th data-k="ln">現地法人名</th>
+          <th data-k="type">施設種別</th>
+          <th data-k="reg">地域</th>
+          <th data-k="ctry">国</th>
+          <th data-k="addr">所在地</th>
+          <th data-k="prod">主要製品／機能</th>
+          <th data-k="conf">確度</th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      出典：各社公式サイト（拠点一覧・会社概要・グループ会社一覧）、公式ニュースリリース、有価証券報告書・SEC提出書類、報道記事。
+    </div>
+  </footer>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/icons.js"></script>
+<script>
+(function () {
+  const CONF = { high: '高', medium: '中', low: '低（要確認）' };
+  let sortKey = 'co', sortAsc = true;
+  const q = document.getElementById('q'),
+        fCo = document.getElementById('fCo'),
+        fType = document.getElementById('fType'),
+        fReg = document.getElementById('fReg');
+
+  fCo.innerHTML = '<option value="">全企業</option>' +
+    COMPANIES.map(c => `<option value="${c.id}">${c.short}</option>`).join('');
+  fType.innerHTML = '<option value="">全種別</option>' +
+    Object.keys(FACILITY_TYPES).sort((a,b)=>FACILITY_TYPES[a].order-FACILITY_TYPES[b].order)
+      .map(t => `<option value="${t}">${FACILITY_TYPES[t].label}</option>`).join('');
+  fReg.innerHTML = '<option value="">全地域</option>' +
+    REGIONS.filter(r => SITES.some(s => s.reg === r)).map(r => `<option value="${r}">${r}</option>`).join('');
+
+  const val = (s, k) => ({
+    co: COMPANY_MAP[s.c].short, n: s.n, ln: s.ln,
+    type: typeLabels(s.t).join('／'), reg: s.reg, ctry: s.ctry,
+    addr: s.addr, prod: s.prod, conf: CONF[s.conf]
+  })[k];
+
+  function rows() {
+    const t = q.value.trim().toLowerCase();
+    return SITES.filter(s =>
+      (!fCo.value   || s.c === fCo.value) &&
+      (!fType.value || s.t.includes(fType.value)) &&
+      (!fReg.value  || s.reg === fReg.value) &&
+      (!t || (s.n + s.ln + s.addr + s.prod + s.ctry + COMPANY_MAP[s.c].name).toLowerCase().includes(t))
+    ).sort((a, b) => {
+      const r = String(val(a, sortKey)).localeCompare(String(val(b, sortKey)), 'ja');
+      return sortAsc ? r : -r;
+    });
+  }
+
+  function render() {
+    const list = rows();
+    document.getElementById('count').textContent = `${list.length} / ${SITES.length} 拠点`;
+    document.getElementById('tb').innerHTML = list.map(s => {
+      const co = COMPANY_MAP[s.c];
+      return `<tr>
+        <td><span class="co"><i style="background:${co.color}"></i>${co.short}</span></td>
+        <td class="nm">${s.n}</td>
+        <td style="font-size:11px">${s.ln}</td>
+        <td style="white-space:nowrap">${typeLabels(s.t).map(l=>{
+          const k = Object.keys(FACILITY_TYPES).find(x=>FACILITY_TYPES[x].label===l);
+          return `<span class="tag tag--${k}">${l}</span>`;
+        }).join(' ')}</td>
+        <td>${s.reg}</td>
+        <td style="white-space:nowrap">${s.ctry}</td>
+        <td style="min-width:200px">${s.addr}</td>
+        <td style="min-width:260px;font-size:11.5px">${s.prod}</td>
+        <td style="white-space:nowrap">${s.conf === 'low'
+          ? '<span class="tag tag--warn">要確認</span>' : CONF[s.conf]}</td>
+      </tr>`;
+    }).join('');
+
+    document.querySelectorAll('th[data-k]').forEach(th => {
+      th.classList.toggle('sorted', th.dataset.k === sortKey);
+      th.classList.toggle('asc', th.dataset.k === sortKey && sortAsc);
+    });
+  }
+
+  document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
+    if (sortKey === th.dataset.k) sortAsc = !sortAsc; else { sortKey = th.dataset.k; sortAsc = true; }
+    render();
+  }));
+  [q, fCo, fType, fReg].forEach(el => el.addEventListener('input', render));
+
+  document.getElementById('csv').addEventListener('click', () => {
+    const head = ['企業','拠点名','現地法人名','施設種別','地域','国','所在地','主要製品／機能','緯度','経度','確度','座標精度','出典'];
+    const esc = v => '"' + String(v).replace(/"/g, '""') + '"';
+    const body = rows().map(s => [
+      COMPANY_MAP[s.c].name, s.n, s.ln, typeLabels(s.t).join('／'), s.reg, s.ctry,
+      s.addr, s.prod, s.lat.toFixed(5), s.lng.toFixed(5), CONF[s.conf], s.geo, s.src
+    ].map(esc).join(','));
+    const csv = '﻿' + [head.map(esc).join(','), ...body].join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'supplier_sites_' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

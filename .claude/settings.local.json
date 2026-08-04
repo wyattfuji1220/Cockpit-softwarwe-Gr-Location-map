@@ -17,7 +17,10 @@
       "WebFetch(domain:www.visteon.com)",
       "Bash(git add *)",
       "Bash(git commit -q -m '[初期] リポジトリ初期化：README・.gitignore *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(sed -e 's|<title>世界地図 ｜|<title>日本地図 ｜|' world.html)",
+      "Bash(python -c ' *)",
+      "Bash(npx --version)"
     ]
   }
 }
